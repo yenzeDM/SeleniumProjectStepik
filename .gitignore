@@ -1,3 +1,4 @@
 selenium_projectenv/
 __pycache__/
 .pytest_cache/
+/description.txt
