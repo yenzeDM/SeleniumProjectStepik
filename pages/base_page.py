@@ -1,5 +1,6 @@
-from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import NoAlertPresentException
+from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException, TimeoutException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import math
 
 
@@ -7,21 +8,21 @@ class BasePage:
     def __init__(self, browser, url, timeout=10):
         self.browser = browser
         self.url = url
-        self.browser.implicitly_wait(timeout)
+        # self.browser.implicitly_wait(timeout)
 
     def open(self):
         self.browser.get(self.url)
 
-    def is_element_present(self, how, what):
+    def is_element_present(self, method, css_celector):
         try:
-            self.browser.find_element(how, what)
+            self.browser.find_element(method, css_celector)
         except NoSuchElementException:
             return False
         return True
 
-    def find_element(self, how, what):
+    def find_element(self, method, css_celector):
         try:
-            return self.browser.find_element(how, what)
+            return self.browser.find_element(method, css_celector)
         except NoSuchElementException as noelem:
             return noelem
 
@@ -38,3 +39,20 @@ class BasePage:
             alert.accept()
         except NoAlertPresentException:
             print("No second alert presented")
+
+    def is_not_element_present(self, method, css_celector, timeout=4):
+        try:
+            WebDriverWait(self.browser, timeout).until(
+                EC.presence_of_element_located((method, css_celector)))
+        except TimeoutException:
+            return True
+        return False
+
+    def is_disappeared(self, method, css_celector, timeout=4):
+        try:
+            WebDriverWait(self.browser, timeout, 1, TimeoutException).\
+                until_not(EC.presence_of_element_located(
+                    (method, css_celector)))
+        except TimeoutException:
+            return False
+        return True

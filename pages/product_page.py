@@ -10,11 +10,11 @@ class ProductPage(BasePage):
         find_submit_basket = self.find_element(
             *ProductPageLocators.SUBMIT_BASKET)
         find_submit_basket.click()
-        self.solve_quiz_and_get_code()
+        # self.solve_quiz_and_get_code()
 
     def message_coincide_with_name_product(self):
         message = self.find_element(
-            *ProductPageLocators.MESSAGE_ADD_NAME_PRODUCT_TO_BASKET)
+            *ProductPageLocators.MESSAGE_ABOUT_ADDING_NAME_PRODUCT_TO_BASKET)
         name_product = self.find_element(*ProductPageLocators.NAME_PRODUCT)
         assert message.text == name_product.text, 'Message about add to basket has not correct name product'
 
@@ -23,3 +23,11 @@ class ProductPage(BasePage):
             *ProductPageLocators.MESSAGE_ABOUT_CASH_VALUE_BASKET)
         price_product = self.find_element(*ProductPageLocators.PRICE_PRODUCT)
         assert price_message.text == price_product.text, 'Message about cash value basket does not coincide with price product'
+
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(
+            *ProductPageLocators.SUCCESS_MESSAGE), 'Success message is presented, but should not be'
+
+    def success_message_should_disappear(self):
+        assert self.is_disappeared(
+            *ProductPageLocators.SUCCESS_MESSAGE), 'Success message is not disappeared'
