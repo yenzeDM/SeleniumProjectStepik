@@ -1,7 +1,6 @@
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
@@ -29,15 +28,6 @@ def browser(request):
         path = Service(ChromeDriverManager().install())
 
         r_browser = webdriver.Chrome(service=path, options=options)
-    elif browser_name == "firefox":
-        print("\nstart firefox browser for test..")
-
-        options = FirefoxOptions()
-        options.set_preference("intl.accept_languages", user_language)
-
-        path = None
-
-        r_browser = webdriver.Firefox(executable_path=path, options=options)
     else:
         raise pytest.UsageError("--browser_name should be chrome or firefox")
     yield r_browser
