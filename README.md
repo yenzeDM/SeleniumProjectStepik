@@ -1,3 +1,3 @@
 # selenium_project
 
-My project is auto-testing web shop
+The program that tests the web shop in auto mode
